@@ -1,0 +1,15 @@
+{
+  "hello": "Hello",
+  "welcomeMessage": "Welcome to our app!",
+  "changeLanguage": "changeLanguage",
+  "Explortheapp":"Explor the app!",
+  "EnteryourphoneNumber": "Enter your phone Number",
+  "Enterpassword": "Enter password",
+  "ForgetPassword": "Forget Password?",
+  "Login": "Login",
+  "Notregisteryet": "Not register yet?",
+  "CreateAccount": "Create Account",
+  "letsstarte":"Lets Start"
+
+
+}

@@ -1,0 +1,15 @@
+{
+  "hello": "مرحباً",
+  "welcomeMessage": "مرحبًا بك في تطبيقنا!",
+  "changeLanguage": "تغيير اللغة"
+  ,
+  "Explortheapp":"اكتشف التطبيق!",
+  "EnteryourphoneNumber": "أدخل رقم هاتفك",
+  "Enterpassword": "أدخل كلمة المرور",
+  "ForgetPassword": "نسيت كلمة المرور؟",
+  "Login": "تسجيل الدخول",
+  "Notregisteryet": "لم تسجل بعد؟",
+  "CreateAccount": "إنشاء حساب",
+  "letsstarte":"هيا لنبدأ"
+
+}
