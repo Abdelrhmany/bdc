@@ -9,10 +9,18 @@ import '../../generated/l10n.dart';
 import 'buttomnavbar.dart';
 import 'forgetPassword.dart'; // تأكد من استيراد ملفات الترجمة
 
-class Loginscreen extends StatelessWidget {
+class Loginscreen extends StatefulWidget {
   Loginscreen({super.key});
+
+  @override
+  State<Loginscreen> createState() => _LoginscreenState();
+}
+
+class _LoginscreenState extends State<Loginscreen> {
   final dio = Dio();
+
   var res;
+
   Future cc() async {
     var response = await dio.post(
       '${Globals.link}/login',
@@ -22,15 +30,14 @@ class Loginscreen extends StatelessWidget {
     res = response.data;
   }
 
-  TextEditingController password =
-      TextEditingController(); // Create the controller
-  TextEditingController phone =
-      TextEditingController(); // Create the controller
+  TextEditingController password = TextEditingController();
+  // Create the controller
+  TextEditingController phone = TextEditingController();
+  // Create the controller
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView(
-        shrinkWrap: true,
+      body: Column(
         children: [
           const SizedBox(height: 20),
           Container(

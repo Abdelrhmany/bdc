@@ -7,8 +7,7 @@ var dio = Dio();
 Future<List> getdata(ids) async {
   var ids;
   try {
-    Response response =
-        await dio.get('${Globals.link}/questions/filter?excludeIds=$ids');
+    Response response = await dio.get('${Globals.link}/questions/');
     Globals.allquistions = response.data;
     print(Globals.allquistions);
     return response.data;

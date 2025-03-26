@@ -1,4 +1,4 @@
-package com.example.bdc
+package com.techleftco.bdc
 
 import io.flutter.embedding.android.FlutterActivity
 

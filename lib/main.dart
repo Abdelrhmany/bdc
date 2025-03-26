@@ -47,8 +47,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Locale _locale = const Locale('en', 'US'); // اللغة الافتراضية
-
-  void changeLanguage(Locale newLocale) {
+void initState() {
+    super.initState();
+    Globals().fetchLinkFromApi(); // تحديث الرابط عند تشغيل الصفحة الرئيسية
+  }  void changeLanguage(Locale newLocale) {
     setState(() {
       _locale = newLocale; // تغيير اللغة
     });

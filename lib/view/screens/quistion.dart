@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:bdc/controllers/gitsurvfromapi.dart';
 import 'package:bdc/controllers/global.dart';
@@ -14,11 +16,15 @@ class Quistion extends StatefulWidget {
 }
 
 class _QuistionState extends State<Quistion> {
-  bool isLoading = true; // ✅ متغير لمعرفة حالة تحميل البيانات
+  bool isLoading = true; 
   List<String> ids = [];
+  String jsondata = "";
+  late String res;
+
   @override
   void initState() {
     super.initState();
+    res = "{$jsondata}";
     loadData(); // ✅ استدعاء الفانكشن اللي بتجيب البيانات
   }
 
@@ -48,7 +54,6 @@ class _QuistionState extends State<Quistion> {
                   child: Image.asset('assets/topone.png'),
                 ),
 
-                // ✅ عرض "جاري التحميل" لو البيانات لسه محملة
                 if (isLoading)
                   Expanded(child: Center(child: CircularProgressIndicator()))
                 else
@@ -69,6 +74,7 @@ class _QuistionState extends State<Quistion> {
                                   ? Textquistion(
                                     quistion: squ['question']['ar'],
                                     jsondata: "",
+                                    id: squ['_id'],
                                   )
                                   : Multichose(
                                     quistion: squ['question']['ar'],
@@ -83,9 +89,10 @@ class _QuistionState extends State<Quistion> {
                 const SizedBox(height: 20),
                 CustomButton(
                   onPressed: () {
-                    Globals globals = Globals();
-                    globals.saveExcludedIds(ids);
-                    print(ids);
+                    // Globals globals = Globals();
+                    // globals.saveExcludedIds(ids);
+                    // print(ids);
+                    print(jsondata+'===='+res);
                   },
                   text: 'Submit',
                 ),
@@ -97,94 +104,3 @@ class _QuistionState extends State<Quistion> {
     );
   }
 }
-
-// import 'package:flutter/material.dart';
-// import 'package:newprojectmobilw/global.dart';
-
-// import '../componants/button.dart';
-// import '../componants/multichose.dart';
-// import '../componants/textQuistion.dart';
-
-// class Quistion extends StatelessWidget {
-//   const Quistion({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Padding(
-//         padding: const EdgeInsets.only(left: 15, right: 15),
-//         child: Stack(
-//           children: [
-//             Align(
-//               alignment: Alignment.bottomLeft,
-//               child: Image.asset('assets/buttom.png'),
-//             ),
-//             SingleChildScrollView(
-//               child: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 children: [
-//                   Container(
-//                     height: 189,
-//                     width: 134,
-//                     child: Image.asset(
-//                       'assets/topone.png',
-//                     ),
-//                   ),
-//                   SingleChildScrollView(
-//                     child: Column(
-//                       children: [
-//                         //   Center(
-//                         //     child:
-//                         //         Textquistion(quistion: 'quistion', jsondata: ''),
-//                         //   ),
-//                         //   const SizedBox(
-//                         //     height: 20,
-//                         //   ),
-//                         //   Center(
-//                         //       child: Multichose(
-//                         //     quistion: 'how old are you',
-//                         //     answers: ['1', '2', '3', '4'],
-//                         //   )),
-//                         Flexible(
-//                           child: ListView.builder(
-//                             itemCount: Globals
-//                                 .allquistions.length, // عدد العناصر في القائمة
-//                             itemBuilder: (context, index) {
-//                               var questions = Globals.allquistions[index]
-//                                   ['questions'][0]['question']['ar'];
-//                               // الحصول على السؤال باللغة العربية من الكائن
-
-//                               return ListTile(
-//                                 title: ElevatedButton(
-//                                     onPressed: () {
-//                                       print(questions);
-//                                     },
-//                                     child: Text(
-//                                         'data')), // عرض السؤال باللغة العربية
-//                               );
-//                             },
-//                           ),
-//                         ),
-//                         SizedBox(
-//                           height: 20,
-//                         ),
-//                         CustomButton(
-//                           onPressed: () {
-//                             var x = Globals.allquistions[0]['questions'][0]
-//                                 ['question']['ar'];
-//                             print(x);
-//                           },
-//                           text: 'Susubmit',
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
