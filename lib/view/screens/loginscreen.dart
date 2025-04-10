@@ -21,19 +21,33 @@ class _LoginscreenState extends State<Loginscreen> {
 
   var res;
 
-  Future cc() async {
+  Future<Map<String, dynamic>?> cc() async {
+  try {
+    final dio = Dio(BaseOptions(
+      validateStatus: (status) {
+        return status != null; 
+      },
+    ));
+
     var response = await dio.post(
       '${Globals.link}/login',
-      data: {'phone': phone.text, 'password': password.text},
+      data: {"phone": phone.text, "password": password.text},
     );
-    print(response.data);
-    res = response.data;
+
+    if (response.statusCode == 200) {
+      print("✅ نجاح: ${response.data}");
+      return response.data;
+    } else {
+      print("⚠️ خطأ: ${response.statusCode} - ${response.data}");
+    }
+  } catch (e) {
+    print("❌ استثناء: $e");
   }
+}
+
 
   TextEditingController password = TextEditingController();
-  // Create the controller
   TextEditingController phone = TextEditingController();
-  // Create the controller
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,33 +109,41 @@ class _LoginscreenState extends State<Loginscreen> {
             ),
           ),
           CustomButton(
-            onPressed: () async {
-              await cc();
-              if (res['success'] == true) {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (_) => Buttomnavbar()));
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text('Error'),
-                      content: Text('Invalid phone or password'),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    );
-                  },
-                );
-              }
-              // .
-            },
+onPressed: ()async{
+
+
+
+  print(Globals.link);
+  final Map<String, dynamic>? result = await cc();
+
+  if (result != null && result['success'] == true) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => Buttomnavbar()));
+  } else {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(result != null && result['message'] != null
+              ? result['message']
+              : 'Invalid phone or password'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+          },
+            
             text: S.of(context).Login,
           ),
           const SizedBox(height: 10),

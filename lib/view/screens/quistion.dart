@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:bdc/controllers/gitsurvfromapi.dart';
 import 'package:bdc/controllers/global.dart';
@@ -25,13 +26,13 @@ class _QuistionState extends State<Quistion> {
   void initState() {
     super.initState();
     res = "{$jsondata}";
-    loadData(); // ✅ استدعاء الفانكشن اللي بتجيب البيانات
+    loadData();
   }
 
   Future<void> loadData() async {
-    await getdata(ids); // ✅ انتظار تحميل البيانات
+    await getdata(ids); 
     setState(() {
-      isLoading = false; // ✅ تحديث الحالة بعد انتهاء التحميل
+      isLoading = false; 
     });
   }
 
@@ -59,9 +60,9 @@ class _QuistionState extends State<Quistion> {
                 else
                   Expanded(
                     child: ListView.builder(
-                      itemCount: Globals.allquistions.length,
+                      itemCount: Globals.allQuestions.length,
                       itemBuilder: (context, index) {
-                        var question = Globals.allquistions[index];
+                        var question = Globals.allQuestions[index];
                         ids.add(question['_id']);
 
                         return Column(
@@ -88,10 +89,9 @@ class _QuistionState extends State<Quistion> {
                   ),
                 const SizedBox(height: 20),
                 CustomButton(
-                  onPressed: () {
-                    // Globals globals = Globals();
-                    // globals.saveExcludedIds(ids);
-                    // print(ids);
+                  onPressed: ()async {
+                   
+               
                     print(jsondata+'===='+res);
                   },
                   text: 'Submit',

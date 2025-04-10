@@ -7,12 +7,13 @@ import 'package:bdc/view/screens/buttomnavbar.dart';
 import 'package:bdc/view/screens/earn.dart';
 import 'package:bdc/view/screens/joinchanels.dart';
 import 'package:bdc/view/screens/zero.dart';
-
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'controllers/gitsurvfromapi.dart';
 import 'controllers/global.dart';
 import 'view/componants/multichose.dart';
 import 'view/componants/textQuistion.dart';
 import 'view/screens/forgetPassword.dart';
+import 'view/screens/invite.dart';
 import 'view/screens/loginscreen.dart';
 import 'view/screens/quistion.dart';
 import 'view/screens/register.dart';
@@ -21,12 +22,10 @@ import 'view/screens/resetPassword.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive
   await Hive.initFlutter();
-  // getdata();
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled:true,
       tools: const [...DevicePreview.defaultTools],
       builder: (context) => MyApp(),
     ),
@@ -46,13 +45,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('en', 'US'); // اللغة الافتراضية
-void initState() {
+  Locale _locale = const Locale('en', 'US'); 
+void initState()   {
     super.initState();
-    Globals().fetchLinkFromApi(); // تحديث الرابط عند تشغيل الصفحة الرئيسية
-  }  void changeLanguage(Locale newLocale) {
+      } 
+Future<void> _initializeAsyncOperations() async {
+  await Globals().fetchLinkFromApi(); 
+  await Globals().getAllQuestions;
+} 
+void changeLanguage(Locale newLocale) {
     setState(() {
-      _locale = newLocale; // تغيير اللغة
+      _locale = newLocale;
     });
   }
 
@@ -68,7 +71,7 @@ void initState() {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      home: const Zero(),
+      home: const Invite(),
     );
   }
 }

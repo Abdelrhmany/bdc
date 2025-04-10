@@ -1,28 +1,40 @@
-import 'dart:async';
-import 'dart:convert';
-import 'package:dio/dio.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:dio/dio.dart';
+import 'dart:convert';
 
 class Globals {
-  final String appLink = ""; // ضع رابط التطبيق هنا
-  static var link ; // سيتم تحديثه من الـ API
+  final String appLink = "";
+  static String? link;
+  static List<dynamic> allQuestions = [];
 
-  Globals() {
-    fetchLinkFromApi(); // جلب الرابط عند إنشاء الكائن
-  }
+  Globals();
 
   Future<void> fetchLinkFromApi() async {
     try {
-      var response = await Dio().get('https://bigdatacoins.io/red/custom-text');
-print("🔗 الرابط المستلم من API: $response");
-      link=response;
+      var url = Uri.parse('https://bigdatacoins.io/red/custom-text');
+      var response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        link = response.body.trim();
+        print("🔗 الرابط المستلم من API: $link");
+
+        if (link != null && link!.isNotEmpty) {
+          var questionsResponse = await http.get(Uri.parse('$link/questions/'));
+          print("الأسئلة: ${questionsResponse.body}");
+        } else {
+          print("❌ الرابط المستلم فارغ.");
+        }
+      } else {
+        print("❌ خطأ في جلب الرابط: ${response.statusCode}");
+      }
     } catch (e) {
       print("❌ خطأ أثناء جلب الرابط: $e");
     }
   }
 
-  void saveExcludedIds(List<String> ids) async {
+  Future<void> saveExcludedIds(List<String> ids) async {
     var box = await Hive.openBox('excludedItems');
     await box.put('ids', ids);
   }
@@ -32,7 +44,21 @@ print("🔗 الرابط المستلم من API: $response");
     return box.get('ids', defaultValue: []);
   }
 
-  static List allquistions = []; // متغير لتخزين الرابط
+  Future<void> getAllQuestions() async {
+    if (link == null || link!.isEmpty) {
+      print("❌ الرابط غير متوفر.");
+      return;
+    }
+
+    var dio = Dio();
+    try {
+      Response response = await dio.post('$link/questions/p');
+      allQuestions = response.data;
+      print(allQuestions);
+    } catch (e) {
+      print("❌ خطأ أثناء جلب الأسئلة: $e");
+    }
+  }
 
   Future<void> openLink(String url) async {
     final Uri uri = Uri.parse(url);
@@ -41,37 +67,3 @@ print("🔗 الرابط المستلم من API: $response");
     }
   }
 }
-
-
-
-
-// import 'dart:async';
-// import 'dart:convert';
-// import 'dart:typed_data';
-// import 'package:dio/dio.dart';
-// import 'package:url_launcher/url_launcher.dart';
-// import 'package:hive/hive.dart';
-
-// class Globals {
-//   final String appLink = ""; // ضع رابط التطبيق هنا
-//   static String link =
-//       "https://b2cd-196-136-190-118.ngrok-free.app"; // متغير لتخزين الرابط
-
-//   void saveExcludedIds(List<String> ids) async {
-//     var box = await Hive.openBox('excludedItems');
-//     await box.put('ids', ids);
-//   }
-
-//   Future<List<String>> getExcludedIds() async {
-//     var box = await Hive.openBox('excludedItems');
-//     return box.get('ids', defaultValue: []);
-//   }
-
-//   static List allquistions = []; // متغير لتخزين الرابط
-//   Future<void> openLink(String url) async {
-//     final Uri uri = Uri.parse(url);
-//     if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
-//       throw Exception('Could not launch $url');
-//     }
-//   }
-// }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bdc/view/componants/button.dart';
 
+import '../../controllers/global.dart';
 import '../../generated/l10n.dart';
 import '../../main.dart';
 import 'loginscreen.dart';
@@ -14,6 +15,14 @@ class Zero extends StatefulWidget {
 
 class _ZeroState extends State<Zero> {
   @override
+    final Globals globals = Globals();
+ void initState() {
+    super.initState();
+    initializeAppData();
+  }void initializeAppData() async {
+    await globals.fetchLinkFromApi();
+    await globals.getAllQuestions();
+  }
   bool _isEnglish = true;
 
   Widget build(BuildContext context) {

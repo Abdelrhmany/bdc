@@ -5,6 +5,7 @@ import 'package:bdc/view/componants/customtextfield.dart';
 
 import '../../controllers/global.dart';
 import '../componants/button.dart';
+import '../componants/customdrop.dart';
 
 class Register extends StatefulWidget {
   Register({super.key});
@@ -126,7 +127,6 @@ class _RegisterState extends State<Register> {
                   child: CustomTextField(controller: otp, hintText: 'Otp'),
                 ),
                 const SizedBox(height: 10),
-                // Image.asset('password_dont_mach.png'),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -150,7 +150,7 @@ class _RegisterState extends State<Register> {
                       children: [
                         const Text('age'),
                         const SizedBox(height: 5),
-                        SmallCustomShapeField(controller: x),
+                        Customdrop(controller: x),
                       ],
                     ),
                   ],
